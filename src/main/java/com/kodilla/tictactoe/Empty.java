@@ -5,4 +5,9 @@ public class Empty extends Figure {
     public String toString() {
         return " ";
     }
+
+    @Override
+    public String figureType() {
+        return " ";
+    }
 }

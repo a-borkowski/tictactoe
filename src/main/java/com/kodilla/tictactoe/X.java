@@ -5,4 +5,9 @@ public class X extends Figure {
     public String toString() {
         return "X";
     }
+
+    @Override
+    public String figureType() {
+        return "X";
+    }
 }

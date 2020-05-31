@@ -7,67 +7,126 @@ public class Board {
     private List<BoardRow> rows = new ArrayList<>();
 
     public Board() {
-        for(int n=0; n<3; n++)
-            rows.add(new BoardRow());
+        initBoard();
     }
 
-    public Figure getFigure(int col, int row){
+    public Figure getFigure(int col, int row) {
         return rows.get(row).getCols().get(col);
     }
 
-    public void setFigure(int col, int row, Figure figure){
+    public void setFigure(int col, int row, Figure figure) {
         rows.get(row).getCols().set(col, figure);
     }
 
-    public boolean checkWinInRows(Board board, Figure figure) {
-        int row1;
-        for (row1 = 0; row1 < 3; row1++) {
-            boolean win = true;
-            int col1;
-            for (col1 = 0; col1 < 3; col1++) {
-                if (getFigure(col1, row1) != figure) {
-                    win = false;
-                    break;
-                }
-            }
-            if (win) {
-                return true;
-            }
-        }
-        return false;
+    public boolean isWinner() {
+        return checkWinInRows() || checkWinInCols() || checkWinInDiagonals();
     }
 
-    public boolean checkWinInCols(Board board, Figure figure) {
-        int col2;
-        for (col2 = 0; col2 < 3; col2++) {
-            boolean win = true;
-            int row2;
-            for (row2 = 0; row2 < 3; row2++) {
-                if (getFigure(col2, row2) != figure) {
-                    win = false;
-                    break;
-                }
-            }
-            if (win) {
-                return true;
+    public boolean isBoardFull() {
+        boolean result = true;
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                if (getFigure(col, row) instanceof Empty)
+                    result = false;
             }
         }
-        return false;
+        return result;
     }
 
+    private boolean checkWinInDiagonals() {
+        boolean result = isFirstDiagonalX();
+        result = result || isSecondDiagonalX();
+        result = result || isFirstDiagonalO();
+        result = result || isSecondDiagonalO();
+        return result;
+    }
+
+    private boolean isSecondDiagonalO() {
+        boolean result = true;
+        for (int n = 0; n < 3; n++) {
+            if (!(getFigure(2 - n, 2 - n) instanceof O)) result = false;
+        }
+        return result;
+    }
+
+    private boolean isFirstDiagonalO() {
+        boolean result = true;
+        for (int n = 0; n < 3; n++) {
+            if (!(getFigure(n, n) instanceof O)) result = false;
+        }
+        return result;
+    }
+
+    private boolean isSecondDiagonalX() {
+        boolean result = true;
+        for (int n = 0; n < 3; n++) {
+            if (!(getFigure(2 - n, 2 - n) instanceof X)) result = false;
+        }
+        return result;
+    }
+
+    private boolean isFirstDiagonalX() {
+        boolean result = true;
+        for (int n = 0; n < 3; n++) {
+            if (!(getFigure(n, n) instanceof X)) result = false;
+        }
+        return result;
+    }
+
+    private boolean checkWinInRows() {
+        boolean result = false;
+        for (int row = 0; row < 3; row++) {
+            result = result || allInRow(row);
+        }
+        return result;
+    }
+
+    private boolean allInRow(int row) {
+        return
+                (getFigure(0, row) instanceof O &&
+                        getFigure(1, row) instanceof O &&
+                        getFigure(2, row) instanceof O) ||
+                        (getFigure(0, row) instanceof X &&
+                                getFigure(1, row) instanceof X &&
+                                getFigure(2, row) instanceof X);
+    }
+
+    private boolean checkWinInCols() {
+        boolean result = false;
+        for (int col = 0; col < 3; col++) {
+            result = result || allInCol(col);
+        }
+        return result;
+    }
+
+    private boolean allInCol(int col) {
+        return
+                (getFigure(col, 0) instanceof O &&
+                        getFigure(col, 1) instanceof O &&
+                        getFigure(col, 2) instanceof O) ||
+                        (getFigure(col, 0) instanceof X &&
+                                getFigure(col, 1) instanceof X &&
+                                getFigure(col, 2) instanceof X);
+    }
 
     @Override
     public String toString() {
         String s = "|-----------------|\n";
-        for(BoardRow row:rows){
+        for (BoardRow row : rows) {
             s += "|     |     |     |\n";
             s += "|";
-            for (Figure figure:row.getCols()){
+            for (Figure figure : row.getCols()) {
                 s += "  " + figure + "  |";
             }
             s += "\n|     |     |     |\n";
-            s +=   "|-----------------|\n";
+            s += "|-----------------|\n";
         }
         return s;
+    }
+
+    public void initBoard() {
+        rows.clear();
+        for (int n = 0; n < 3; n++)
+            rows.add(new BoardRow());
     }
 }

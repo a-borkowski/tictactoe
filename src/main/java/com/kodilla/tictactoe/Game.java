@@ -9,14 +9,14 @@ public class Game {
 
         System.out.println("Witaj w grze \"Kółko i krzyżyk\"");
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
 
             System.out.println("Podaj numer wiersza i kolumny do wstawienia: \"X\"");
             System.out.println("Kolumna nr: ");
             int col1 = new Scanner(System.in).nextInt() - 1;
             System.out.println("Wiersz nr: ");
             int row1 = new Scanner(System.in).nextInt() - 1;
-            if (board.getFigure(col1, row1) == null) {
+            if (board.getFigure(col1, row1) instanceof Empty) {
                 board.setFigure(col1, row1, new X());
             } else {
                 System.out.println("Niedozwolony ruch / Pole zajęte / Zacznij od początku");
@@ -29,7 +29,7 @@ public class Game {
             int col2 = new Scanner(System.in).nextInt() - 1;
             System.out.println("Wiersz nr: ");
             int row2 = new Scanner(System.in).nextInt() - 1;
-            if (board.getFigure(col2, row2) == null) {
+            if (board.getFigure(col2, row2) instanceof Empty) {
                 board.setFigure(col2, row2, new O());
             } else {
                 System.out.println("Niedozwolony ruch / Pole zajęte / Zacznij od początku");
